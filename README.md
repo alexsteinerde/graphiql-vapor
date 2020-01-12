@@ -5,6 +5,21 @@
 
 This package ships functionality to add the [GraphiQL](https://github.com/graphql/graphiql) GraphQL web editor and request tester page to a `Router` service in Vapor.
 
+## Installation
+```
+import PackageDescription
+
+let package = Package(
+    dependencies: [
+    .package(url: "https://github.com/alexsteinerde/graphiql-vapor.git", from: "1.0.0"),
+    ],
+    targets: [
+    .target(name: "App", dependencies: [<#T##Other Dependencies#>, "GraphiQLVapor"]),
+    ...
+    ]
+)
+```
+
 ## Example
 ```Swift
 let router = EngineRouter.default()
