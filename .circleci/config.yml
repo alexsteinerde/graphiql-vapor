@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Install openssl
-          command: apt-get -qq update && apt-get install -yq libssl-dev
+          command: apt-get -qq update && apt-get install -yq libssl-dev zlib1g-dev
       - run:
           name: Compile code
           command: swift build
@@ -23,7 +23,7 @@ jobs:
       - checkout
       - run:
           name: Install openssl
-          command: apt-get -qq update && apt-get install -yq libssl-dev
+          command: apt-get -qq update && apt-get install -yq libssl-dev zlib1g-dev
       - run:
           name: Compile code with optimizations
           command: swift build -c release
