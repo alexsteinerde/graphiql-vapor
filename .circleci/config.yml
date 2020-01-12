@@ -6,7 +6,7 @@ jobs:
       - image: swift:5.1
     steps:
       - checkout
-      - install-dependencies:
+      - run:
           name: Install openssl
           command: apt-get -qq update && apt-get install -yq libssl-dev
       - run:
@@ -21,7 +21,7 @@ jobs:
       - image: swift:5.1
     steps:
       - checkout
-      - install-dependencies:
+      - run:
           name: Install openssl
           command: apt-get -qq update && apt-get install -yq libssl-dev
       - run:
