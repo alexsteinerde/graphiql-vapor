@@ -1,7 +1,7 @@
 # GraphiQLVapor
 [![Language](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-3-F6CBCA.svg)](http://vapor.codes)
-[![CircleCI](https://circleci.com/gh/alexsteinerde/graphiql-vapor.svg?style=shield)](https://circleci.com/gh/alexsteinerde/graphiql-vapor)
+![build](https://github.com/alexsteinerde/graphiql-vapor/workflows/build/badge.svg)
 
 This package ships functionality to add the [GraphiQL](https://github.com/graphql/graphiql) GraphQL web editor and request tester page to a `Router` service in Vapor.
 
