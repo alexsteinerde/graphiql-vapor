@@ -23,6 +23,6 @@ let package = Package(
             dependencies: ["Vapor"]),
         .testTarget(
             name: "GraphiQLVaporTests",
-            dependencies: ["GraphiQLVapor", "Vapor"]),
+            dependencies: ["GraphiQLVapor", "Vapor", "XCTVapor"]),
     ]
 )
