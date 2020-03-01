@@ -6,7 +6,7 @@
 This package ships functionality to add the [GraphiQL](https://github.com/graphql/graphiql) GraphQL web editor and request-tester page to an `Application` instance  in Vapor.
 
 ## Installation
-```
+```swift
 import PackageDescription
 
 let package = Package(
