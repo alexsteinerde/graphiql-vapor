@@ -1,14 +1,14 @@
 import Vapor
 
 extension Request {
-    internal func serve(html: String) -> HTTPResponse {
-        return HTTPResponse(status: .ok, headers: HTTPHeaders([(HTTPHeaderName.contentType.description, "text/html")]), body: html)
+    internal func serve(html: String) -> Response {
+        return Response(status: .ok, headers: HTTPHeaders([(HTTPHeaders.Name.contentType.description, "text/html")]), body: Response.Body(string: html))
     }
 }
 
-public extension Router {
-    func enableGraphiQL(on pathComponents: PathComponentsRepresentable..., method: HTTPMethod = .GET) {
-        self.on(method, at: pathComponents) { (request) -> HTTPResponse in
+public extension Application {
+    func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET) {
+        self.on(method, pathComponents) { (request) -> Response in
             request.serve(html: grahphiQLHTML)
         }
     }
