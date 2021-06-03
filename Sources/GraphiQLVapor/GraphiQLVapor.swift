@@ -7,16 +7,20 @@ extension Request {
 }
 
 public extension Application {
-    func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET) {
+    func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET, serverPath: PathComponent = "/graphql") {
+        graphQLServerPath = serverPath
+
         self.on(method, pathComponents) { (request) -> Response in
             request.serve(html: grahphiQLHTML)
         }
     }
 
     func enableGraphiQL(method: HTTPMethod = .GET) {
-        self.enableGraphiQL(on: "", method: .GET)
+        self.enableGraphiQL(on: "", method: .GET, serverPath: "/graphql")
     }
 }
+
+var graphQLServerPath: PathComponent = "/graphql"
 
 let grahphiQLHTML = """
 <!--
@@ -134,7 +138,7 @@ let grahphiQLHTML = """
     function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('/graphql', {
+        return fetch('\(graphQLServerPath)', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
