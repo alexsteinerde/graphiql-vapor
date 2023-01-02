@@ -25,9 +25,4 @@ final class GraphiQLVaporTests: XCTestCase {
             XCTAssertEqual(res.status, HTTPResponseStatus.ok)
         }
     }
-
-    static var allTests = [
-        ("testRegistering", testRegistering),
-        ("testRegisterOnOtherRoute", testRegisterOnOtherRoute)
-    ]
 }
