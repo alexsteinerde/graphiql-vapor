@@ -1,5 +1,5 @@
 # GraphiQLVapor
-[![Language](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)](http://swift.org)
+[![Language](https://img.shields.io/badge/Swift-5.4-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-4-F6CBCA.svg)](http://vapor.codes)
 [![build](https://github.com/alexsteinerde/graphiql-vapor/workflows/build/badge.svg)](https://github.com/alexsteinerde/graphiql-vapor/actions)
 
@@ -11,10 +11,15 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-    .package(url: "https://github.com/alexsteinerde/graphiql-vapor.git", from: "2.0.0"),
+        .package(url: "https://github.com/alexsteinerde/graphiql-vapor.git", from: "2.2.0"),
     ],
     targets: [
-    .target(name: "App", dependencies: ["GraphiQLVapor"]),
+        .target(
+            name: "App",
+            dependencies: [
+                .product(name: "GraphiQLVapor", package: "graphiql-vapor"),
+            ]
+        ),
     ...
     ]
 )
