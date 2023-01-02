@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,10 +9,7 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        // Products define the executables and libraries produced by a package, and make them visible to other packages.
-        .library(
-            name: "GraphiQLVapor",
-            targets: ["GraphiQLVapor"]),
+        .library(name: "GraphiQLVapor", targets: ["GraphiQLVapor"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,9 +20,12 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "GraphiQLVapor",
-            dependencies: ["Vapor"]),
-        .testTarget(
-            name: "GraphiQLVaporTests",
-            dependencies: ["GraphiQLVapor", "Vapor", "XCTVapor"]),
+            dependencies: [
+                .product(name: "Vapor", package: "vapor"),
+            ]),
+        .testTarget(name: "GraphiQLVaporTests", dependencies: [
+            .target(name: "GraphiQLVapor"),
+            .product(name: "XCTVapor", package: "vapor"),
+        ]),
     ]
 )
