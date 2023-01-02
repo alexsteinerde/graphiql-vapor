@@ -7,22 +7,25 @@ extension Request {
 }
 
 public extension Application {
-    func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET, serverPath: PathComponent = "/graphql") {
-        graphQLServerPath = serverPath
-
+    func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET, credentials: GraphiQLCredentialMode = .sameOrigin, serverPath: PathComponent = "/graphql") {
         self.on(method, pathComponents) { (request) -> Response in
-            request.serve(html: grahphiQLHTML)
+            request.serve(html: grahphiQLHTML(path: serverPath, credentialMode: credentials))
         }
     }
 
-    func enableGraphiQL(method: HTTPMethod = .GET) {
-        self.enableGraphiQL(on: "", method: .GET, serverPath: "/graphql")
+    func enableGraphiQL(method: HTTPMethod = .GET, credentials: GraphiQLCredentialMode = .sameOrigin) {
+        self.enableGraphiQL(on: "", method: .GET, credentials: credentials, serverPath: "/graphql")
     }
 }
 
-var graphQLServerPath: PathComponent = "/graphql"
+public enum GraphiQLCredentialMode: String {
+    case include = "include"
+    case sameOrigin = "same-origin"
+    case omit = "omit"
+}
 
-let grahphiQLHTML = """
+func grahphiQLHTML(path: PathComponent, credentialMode: GraphiQLCredentialMode) -> String {
+    return """
 <!--
  *  Copyright (c) 2021 GraphQL Contributors
  *  All rights reserved.
@@ -80,7 +83,7 @@ let grahphiQLHTML = """
     <script>
       function graphQLFetcher(graphQLParams) {
         return fetch(
-          '\(graphQLServerPath)',
+          '\(path)',
           {
             method: 'post',
             headers: {
@@ -88,7 +91,7 @@ let grahphiQLHTML = """
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(graphQLParams),
-            credentials: 'omit',
+            credentials: '\(credentialMode.rawValue)',
           },
         ).then(function (response) {
           return response.json().catch(function () {
@@ -108,3 +111,4 @@ let grahphiQLHTML = """
   </body>
 </html>
 """
+}
