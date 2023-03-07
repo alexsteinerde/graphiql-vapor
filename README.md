@@ -3,7 +3,7 @@
 [![Vapor Version](https://img.shields.io/badge/Vapor-4-F6CBCA.svg)](http://vapor.codes)
 [![build](https://github.com/alexsteinerde/graphiql-vapor/workflows/build/badge.svg)](https://github.com/alexsteinerde/graphiql-vapor/actions)
 
-This package ships functionality to add the [GraphiQL](https://github.com/graphql/graphiql) GraphQL web editor and request-tester page to an `Application` instance in Vapor.
+This package ships functionality to add the [GraphiQL](https://github.com/graphql/graphiql) GraphQL web editor and request-tester page to an `RoutesBuilder` instance in Vapor.
 
 ## Installation
 ```swift
@@ -30,7 +30,7 @@ let package = Package(
 app.enableGraphiQL()
 
 ```
-This will register the web page on `GET /`. If you want to have GraphiQL available on another route, call `app.enableGraphiQL(on: "/graphiQL)` instead.
+This will register the web page on `GET /`. If you want to have GraphiQL available on another route, call `app.enableGraphiQL(on: "/graphiQL)` or `app.grouped("graphiQL").enableGraphiQL()` instead.
 
 ## License
 This project is available under the MIT license. See the LICENSE file for more info.
