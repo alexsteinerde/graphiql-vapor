@@ -6,7 +6,7 @@ extension Request {
     }
 }
 
-public extension Application {
+public extension RoutesBuilder {
     func enableGraphiQL(on pathComponents: PathComponent..., method: HTTPMethod = .GET, credentials: GraphiQLCredentialMode = .sameOrigin, serverPath: PathComponent = "/graphql") {
         self.on(method, pathComponents) { (request) -> Response in
             request.serve(html: grahphiQLHTML(path: serverPath, credentialMode: credentials))

@@ -25,4 +25,15 @@ final class GraphiQLVaporTests: XCTestCase {
             XCTAssertEqual(res.status, HTTPResponseStatus.ok)
         }
     }
+    
+    func testRegisterOnRoutesBuilder() throws {
+        let app = Application(.testing)
+        defer { app.shutdown() }
+
+        app.grouped("test").enableGraphiQL()
+
+        try app.testable().test(.GET, "/test") { res in
+            XCTAssertEqual(res.status, HTTPResponseStatus.ok)
+        }
+    }
 }
