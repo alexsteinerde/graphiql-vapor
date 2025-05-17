@@ -1,16 +1,18 @@
-name: build
-on: [push, pull_request]
+name: test
+on:
+  pull_request: { types: [opened, reopened, synchronize, ready_for_review] }
+  push: { branches: [main] }
 jobs:
   tests:
     runs-on: ubuntu-latest
-    container: swift:5.7-jammy
+    container: swift:6.0-noble
     steps:
     - uses: actions/checkout@v1
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
     - run: swift test --sanitize=thread
   tests-release:
     runs-on: ubuntu-latest
-    container: swift:5.7-jammy
+    container: swift:6.0-noble
     steps:
     - uses: actions/checkout@v1
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
