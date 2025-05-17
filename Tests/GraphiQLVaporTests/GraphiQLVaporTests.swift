@@ -1,39 +1,60 @@
-import XCTest
 import Vapor
-import GraphiQLVapor
-import XCTVapor
+import VaporTesting
+import Testing
 
-final class GraphiQLVaporTests: XCTestCase {
-    func testRegistering() throws {
-        let app = Application(.testing)
-        defer { app.shutdown() }
+@testable import GraphiQLVapor
 
+@Suite
+struct GraphiQLVaporTests {
+
+    @Test
+    func registering() async throws {
+        // prepare
+        let app = try await Application.make(.testing)
+
+        // act
         app.enableGraphiQL()
 
-        try app.testable().test(.GET, "/") { res in
-            XCTAssertEqual(res.status, HTTPResponseStatus.ok)
+        // assert
+        try await app.testing().test(.GET, "/") { res in
+            #expect(res.status == .ok)
         }
+
+        // cleanup
+        try await app.asyncShutdown()
     }
 
-    func testRegisterOnOtherRoute() throws {
-        let app = Application(.testing)
-        defer { app.shutdown() }
+    @Test
+    func registerOnOtherRoute() async throws{
+        // prepare
+        let app = try await Application.make(.testing)
 
+        // act
         app.enableGraphiQL(on: "graphiQL")
 
-        try app.testable().test(.GET, "/graphiQL") { res in
-            XCTAssertEqual(res.status, HTTPResponseStatus.ok)
+        // assert
+        try await app.testing().test(.GET, "/graphiQL") { res in
+            #expect(res.status == .ok)
         }
-    }
-    
-    func testRegisterOnRoutesBuilder() throws {
-        let app = Application(.testing)
-        defer { app.shutdown() }
 
+        // cleanup
+        try await app.asyncShutdown()
+    }
+
+    @Test
+    func registerOnRoutesBuilder() async throws {
+        // prepare
+        let app = try await Application.make(.testing)
+
+        // act
         app.grouped("test").enableGraphiQL()
 
-        try app.testable().test(.GET, "/test") { res in
-            XCTAssertEqual(res.status, HTTPResponseStatus.ok)
+        // assert
+        try await app.testing().test(.GET, "/test") { res in
+            #expect(res.status == .ok)
         }
+
+        // cleanup
+        try await app.asyncShutdown()
     }
 }
