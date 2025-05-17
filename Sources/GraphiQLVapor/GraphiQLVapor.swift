@@ -18,7 +18,7 @@ public extension RoutesBuilder {
     }
 }
 
-public enum GraphiQLCredentialMode: String {
+public enum GraphiQLCredentialMode: String, Sendable {
     case include = "include"
     case sameOrigin = "same-origin"
     case omit = "omit"
