@@ -1,16 +1,16 @@
-name: build
+name: test
 on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-latest
-    container: swift:5.7-jammy
+    container: swift:6.0-noble
     steps:
     - uses: actions/checkout@v1
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
     - run: swift test --sanitize=thread
   tests-release:
     runs-on: ubuntu-latest
-    container: swift:5.7-jammy
+    container: swift:6.0-noble
     steps:
     - uses: actions/checkout@v1
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
