@@ -1,5 +1,5 @@
 # GraphiQLVapor
-[![Language](https://img.shields.io/badge/Swift-5.4-brightgreen.svg)](http://swift.org)
+[![Language](https://img.shields.io/badge/Swift-6.0-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-4-F6CBCA.svg)](http://vapor.codes)
 [![build](https://github.com/alexsteinerde/graphiql-vapor/workflows/build/badge.svg)](https://github.com/alexsteinerde/graphiql-vapor/actions)
 
