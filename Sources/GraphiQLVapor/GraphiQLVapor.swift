@@ -27,65 +27,78 @@ public enum GraphiQLCredentialMode: String, Sendable {
 func grahphiQLHTML(path: PathComponent, credentialMode: GraphiQLCredentialMode) -> String {
     return """
 <!--
+ * Source: https://github.com/graphql/graphiql/blob/92375ce782eec3c2f04c530dab14fd7da5495f38/packages/graphiql/index.html
  *  Copyright (c) 2021 GraphQL Contributors
  *  All rights reserved.
  *
  *  This source code is licensed under the license found in the
  *  LICENSE file in the root directory of this source tree.
 -->
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraphiQL 4 with React 19 and GraphiQL Explorer</title>
     <style>
       body {
-        height: 100%;
         margin: 0;
-        width: 100%;
-        overflow: hidden;
+        overflow: hidden; /* in Firefox */
       }
 
       #graphiql {
-        height: 100vh;
+        height: 100dvh;
+      }
+
+      .loading {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
       }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://esm.sh/graphiql@4.0.0/dist/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://esm.sh/@graphiql/plugin-explorer@4.0.0/dist/style.css"
+    />
+    <!-- Note: the ?standalone flag bundles the module along with all of its `dependencies`, excluding `peerDependencies`, into a single JavaScript file. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.1.0",
+          "react/jsx-runtime": "https://esm.sh/react@19.1.0/jsx-runtime",
 
-    <!--
-      This GraphiQL example depends on Promise and fetch, which are available in
-      modern browsers, but can be "polyfilled" for older browsers.
-      GraphiQL itself depends on React DOM.
-      If you do not want to rely on a CDN, you can host these files locally or
-      include them directly in your favored resource bunder.
-    -->
-    <script
-      crossorigin
-      src="https://unpkg.com/react@16/umd/react.development.js"
-    ></script>
-    <script
-      crossorigin
-      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
-    ></script>
+          "react-dom": "https://esm.sh/react-dom@19.1.0",
+          "react-dom/client": "https://esm.sh/react-dom@19.1.0/client",
 
-    <!--
-      These two files can be found in the npm module, however you may wish to
-      copy them directly into your environment, or perhaps include them in your
-      favored resource bundler.
-     -->
-    <link rel="stylesheet" href="https://unpkg.com/graphiql/graphiql.min.css" />
-  </head>
+          "graphiql": "https://esm.sh/graphiql@4.0.0?standalone&external=react,react/jsx-runtime,react-dom,@graphiql/react",
+          "@graphiql/plugin-explorer": "https://esm.sh/@graphiql/plugin-explorer@4.0.0?standalone&external=react,react/jsx-runtime,react-dom,@graphiql/react,graphql",
+          "@graphiql/react": "https://esm.sh/@graphiql/react@0.30.0?standalone&external=react,react/jsx-runtime,react-dom,graphql,@graphiql/toolkit",
 
-  <body>
-    <div id="graphiql">Loading...</div>
-    <script
-      src="https://unpkg.com/graphiql/graphiql.min.js"
-      type="application/javascript"
-    ></script>
-    <script src="/renderExample.js" type="application/javascript"></script>
-    <script>
-      function graphQLFetcher(graphQLParams) {
-        return fetch(
+          "@graphiql/toolkit": "https://esm.sh/@graphiql/toolkit@0.11.2?standalone&external=graphql",
+          "graphql": "https://esm.sh/graphql@16.11.0"
+        }
+      }
+    </script>
+    <script type="module">
+      // Import React and ReactDOM
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      // Import GraphiQL and the Explorer plugin
+      import { GraphiQL } from 'graphiql';
+      import { createGraphiQLFetcher } from '@graphiql/toolkit';
+      import { explorerPlugin } from '@graphiql/plugin-explorer';
+
+      const fetcher = async graphQLParams => {
+        const response = await fetch(
           '\(path)',
           {
-            method: 'post',
+            method: 'POST',
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
@@ -93,21 +106,27 @@ func grahphiQLHTML(path: PathComponent, credentialMode: GraphiQLCredentialMode) 
             body: JSON.stringify(graphQLParams),
             credentials: '\(credentialMode.rawValue)',
           },
-        ).then(function (response) {
-          return response.json().catch(function () {
-            return response.text();
-          });
+        );
+        return response.json();
+      };
+      const explorer = explorerPlugin();
+
+      function App() {
+        return React.createElement(GraphiQL, {
+          fetcher,
+          plugins: [explorer],
         });
       }
 
-      ReactDOM.render(
-        React.createElement(GraphiQL, {
-          fetcher: graphQLFetcher,
-          defaultVariableEditorOpen: true,
-        }),
-        document.getElementById('graphiql'),
-      );
+      const container = document.getElementById('graphiql');
+      const root = ReactDOM.createRoot(container);
+      root.render(React.createElement(App));
     </script>
+  </head>
+  <body>
+    <div id="graphiql">
+      <div class="loading">Loading…</div>
+    </div>
   </body>
 </html>
 """
