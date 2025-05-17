@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     container: swift:6.0-noble
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
     - run: swift test --sanitize=thread
   tests-release:
     runs-on: ubuntu-latest
     container: swift:6.0-noble
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - run: apt-get -qq update && apt-get -q -y install libpq-dev libssl-dev zlib1g-dev
     - run: swift test -c release --sanitize=thread
