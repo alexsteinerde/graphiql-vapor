@@ -94,9 +94,21 @@ func grahphiQLHTML(path: PathComponent, credentialMode: GraphiQLCredentialMode) 
       import { createGraphiQLFetcher } from '@graphiql/toolkit';
       import { explorerPlugin } from '@graphiql/plugin-explorer';
 
-      const fetcher = createGraphiQLFetcher({
-        url: 'https://countries.trevorblades.com',
-      });
+      const fetcher = async graphQLParams => {
+        const response = await fetch(
+          '\(path)',
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(graphQLParams),
+            credentials: '\(credentialMode.rawValue)',
+          },
+        );
+        return response.json();
+      };
       const explorer = explorerPlugin();
 
       function App() {
